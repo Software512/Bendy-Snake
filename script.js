@@ -5,8 +5,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const gradient = ctx.createLinearGradient(20, 0, 220, 0);
-
 var startX;
 var startY;
 var endX;
@@ -20,6 +18,8 @@ var loseAnimationTimer;
 var size;
 var direction;
 var distLeft = 0;
+var apple = { x: 0, y: 0, img: new Image() };
+apple.img.src = "assets/apple.webp";
 
 
 resize();
@@ -59,14 +59,16 @@ function resize() {
 
 function startGame() {
     clearTimeout(timer);
-    startX = [30];
+    startX = [35];
     startY = [50];
-    endX = [70];
+    endX = [65];
     endY = [50];
     angles = [0];
     gameOver = false;
     loseAnimationTimer = 0;
     direction = false;
+    apple.x = Math.random() * 95;
+    apple.y = Math.random() * 95;
     gameLoop();
 }
 
@@ -145,8 +147,11 @@ function gameLoop() {
     //console.log(startX.length + " | " + startX[0] + " | " + endX[0] + " | " + startY[0] + " | " + endY[0] + " | " + angles[0])
 
 
-    // Render snake
-    ctx.beginPath();
+    // Render
+    ctx.drawImage(apple.img, apple.x * size / 100, apple.y * size / 100, size / 20, size / 20);
+    ctx.beginPath(); 
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "green";
     ctx.moveTo(startX[0] * size / 100, startY[0] * size / 100);
     for (let i = 0; i < startX.length; i++) {
         ctx.lineTo(endX[i] * size / 100, endY[i] * size / 100);
