@@ -17,12 +17,20 @@ var gameOver;
 var loseAnimationTimer;
 var size;
 var direction;
-var distLeft = 0;
+var score;
+var highscore = 0;
+var scoreDisplay;
 var apple = { x: 0, y: 0, img: new Image() };
+var scoreUpdated;
+
 apple.img.src = "assets/apple.webp";
 
 
 resize();
+
+if (document.cookie !== "") {
+    highscore = document.cookie.split("=")[1];
+}
 
 document.getElementById("startGame").addEventListener("click", startGame);
 
@@ -59,18 +67,71 @@ function resize() {
 
 function startGame() {
     clearTimeout(timer);
+    score = 0;
+    switch (String(highscore).length) {
+        case 1:
+            scoreDisplay = "HI 000" + highscore + " | 0000";
+            break;
+        case 2:
+            scoreDisplay = "HI 00" + highscore + " | 0000";
+            break;
+        case 3:
+            scoreDisplay = "HI 0" + highscore + " | 0000";
+            break;
+        default:
+            scoreDisplay = "HI " + highscore + " | 0000";
+    }
     startX = [35];
     startY = [50];
     endX = [65];
     endY = [50];
     angles = [0];
     gameOver = false;
+    scoreUpdated = 0;
     loseAnimationTimer = 0;
     direction = false;
     apple.x = Math.random() * 95;
     apple.y = Math.random() * 95;
     gameLoop();
 }
+
+function updateScore() {
+    score++;
+    scoreUpdated = true;
+    if (score > highscore) {
+        highscore = score;
+        document.cookie = "highscore=" + highscore + ";max-age=157784760";
+    }
+    switch (String(highscore).length) {
+        case 1:
+            scoreDisplay = "HI 000" + highscore + " | ";
+            break;
+        case 2:
+            scoreDisplay = "HI 00" + highscore + " | ";
+            break;
+        case 3:
+            scoreDisplay = "HI 0" + highscore + " | ";
+            break;
+        default:
+            scoreDisplay = "HI " + highscore + " | ";
+            break;
+    }
+    switch (String(score).length) {
+        case 1:
+            scoreDisplay = scoreDisplay + "000" + score;
+            break;
+        case 2:
+            scoreDisplay = scoreDisplay + "00" + score;
+            break;
+        case 3:
+            scoreDisplay = scoreDisplay + "0" + score;
+            break;
+        default:
+            scoreDisplay = scoreDisplay + score;
+            break;
+    }
+}
+
 
 function gameLoop() {
     startTime = performance.now();
@@ -93,8 +154,14 @@ function gameLoop() {
         }
         endX[endX.length - 1] += Math.cos(angles[angles.length - 1]) / 2;
         endY[endY.length - 1] += Math.sin(angles[angles.length - 1]) / 2;
-        startX[0] += Math.cos(angles[0]) / 2;
-        startY[0] += Math.sin(angles[0]) / 2;
+        if (scoreUpdated == 0) {
+            startX[0] += Math.cos(angles[0]) / 2;
+            startY[0] += Math.sin(angles[0]) / 2;
+        } else if (scoreUpdated == 9) {
+            scoreUpdated = false;
+        } else {
+            scoreUpdated++;
+        }
         if (endX[endX.length - 1] > 99 || endX[endX.length - 1] < 1 || endY[endY.length - 1] < 1 || endY[endY.length - 1] > 99) {
             gameOver = true
         } else {
@@ -111,7 +178,7 @@ function gameLoop() {
             angles.shift();
         }
     }
-    
+
     // Fixes an issue where every other curve segment has no length and the speed of the back half as fast
     if (Math.sqrt((endX[0] - startX[0]) ** 2 + (endY[0] - startY[0]) ** 2) == 0) {
         startX.shift();
@@ -146,19 +213,36 @@ function gameLoop() {
     }
     //console.log(startX.length + " | " + startX[0] + " | " + endX[0] + " | " + startY[0] + " | " + endY[0] + " | " + angles[0])
 
+    // Collision detection with apples
+    if (
+        endX[endX.length - 1] < apple.x + 5 &&
+        endX[endX.length - 1] + 0.5 > apple.x &&
+        endY[endY.length - 1] < apple.y + 5 &&
+        endY[endY.length - 1] + 0.5 > apple.y
+    ) {
+        apple.x = Math.random() * 95;
+        apple.y = Math.random() * 95;
+        updateScore();
+    }
+
 
     // Render
     ctx.drawImage(apple.img, apple.x * size / 100, apple.y * size / 100, size / 20, size / 20);
-    ctx.beginPath(); 
+    ctx.beginPath();
     ctx.lineCap = "round";
     ctx.strokeStyle = "green";
     ctx.moveTo(startX[0] * size / 100, startY[0] * size / 100);
     for (let i = 0; i < startX.length; i++) {
         ctx.lineTo(endX[i] * size / 100, endY[i] * size / 100);
     }
-    //ctx.arc(endX[endX.length - 1] * size / 100, endY[endY.length - 1] * size / 100, size / 100, 0, Math.PI * 2);
     ctx.stroke();
     ctx.closePath();
+    ctx.beginPath();
+    ctx.arc(endX[endX.length - 1] * size / 100, endY[endY.length - 1] * size / 100, size / 100, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.font = size / 25 + "px sans-serif";
+    ctx.fillText(scoreDisplay, size / 20, size / 15);
     if (endX.length) {
         timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime)));
     }
