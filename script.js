@@ -35,15 +35,15 @@ if (document.cookie !== "") {
 document.getElementById("startGame").addEventListener("click", startGame);
 
 document.addEventListener("keydown", (e) => {
-    if (e.key == "ArrowLeft") {
+    if (e.key == "ArrowLeft" || e.key == "a") {
         direction = -1;
-    } else if (e.key == "ArrowRight") {
+    } else if (e.key == "ArrowRight" || e.key == "d") {
         direction = 1;
     }
 });
 
 document.addEventListener("keyup", (e) => {
-    if ((e.key == "ArrowLeft" && direction == -1) || (e.key == "ArrowRight" && direction == 1)) {
+    if (((e.key == "ArrowLeft" || e.key == "a") && direction == -1) || ((e.key == "ArrowRight" || e.key == "d") && direction == 1)) {
         direction = 0;
     }
 });
