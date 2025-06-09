@@ -70,16 +70,16 @@ function startGame() {
     score = 0;
     switch (String(highscore).length) {
         case 1:
-            scoreDisplay = "HI 000" + highscore + " | 0000";
+            scoreDisplay = "SCORE 0000 | HI 000" + highscore;
             break;
         case 2:
-            scoreDisplay = "HI 00" + highscore + " | 0000";
+            scoreDisplay = "SCORE 0000 | HI 00" + highscore;
             break;
         case 3:
-            scoreDisplay = "HI 0" + highscore + " | 0000";
+            scoreDisplay = "SCORE 0000 | HI 0" + highscore;
             break;
         default:
-            scoreDisplay = "HI " + highscore + " | 0000";
+            scoreDisplay = "SCORE 0000| HI " + highscore;
     }
     startX = [35];
     startY = [50];
@@ -102,32 +102,32 @@ function updateScore() {
         highscore = score;
         document.cookie = "highscore=" + highscore + ";max-age=157784760";
     }
-    switch (String(highscore).length) {
-        case 1:
-            scoreDisplay = "HI 000" + highscore + " | ";
-            break;
-        case 2:
-            scoreDisplay = "HI 00" + highscore + " | ";
-            break;
-        case 3:
-            scoreDisplay = "HI 0" + highscore + " | ";
-            break;
-        default:
-            scoreDisplay = "HI " + highscore + " | ";
-            break;
-    }
     switch (String(score).length) {
         case 1:
-            scoreDisplay = scoreDisplay + "000" + score;
+            scoreDisplay = "SCORE 000" + score + " | ";
             break;
         case 2:
-            scoreDisplay = scoreDisplay + "00" + score;
+            scoreDisplay = "SCORE 00" + score + " | ";
             break;
         case 3:
-            scoreDisplay = scoreDisplay + "0" + score;
+            scoreDisplay = "SCORE 0" + score + " | ";
             break;
         default:
-            scoreDisplay = scoreDisplay + score;
+            scoreDisplay = "SCORE " + score + " | ";
+            break;
+    }
+    switch (String(highscore).length) {
+        case 1:
+            scoreDisplay = scoreDisplay + "HI 000" + highscore;
+            break;
+        case 2:
+            scoreDisplay = scoreDisplay + "HI 00" + highscore;
+            break;
+        case 3:
+            scoreDisplay = scoreDisplay + "HI 0" + highscore;
+            break;
+        default:
+            scoreDisplay = scoreDisplay + "HI " + highscore;
             break;
     }
 }
