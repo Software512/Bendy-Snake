@@ -22,6 +22,10 @@ var highscore = 0;
 var scoreDisplay;
 var apple = { x: 0, y: 0, img: new Image() };
 var scoreUpdated;
+var touchscreen = false;
+var gameStarted = false;
+var leftDown;
+var rightDown;
 
 apple.img.src = "./assets/apple.webp";
 
@@ -40,7 +44,10 @@ document.getElementById("leaveButton").addEventListener("click", () => {
     document.getElementById("gameOver").style.display = "none";
     document.getElementById("score").style.display = "none";
     document.getElementById("mainMenu").style.display = "";
+    document.getElementById("leftArrow").style.display = "none";
+    document.getElementById("rightArrow").style.display = "none";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    gameStarted = false;
 });
 
 document.getElementById("creditsButton").addEventListener("click", () => {
@@ -64,15 +71,68 @@ document.getElementById("closeHelp").addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", (e) => {
-    if (e.key == "ArrowLeft" || e.key == "a") {
+    touchscreen = false;
+    document.getElementById("leftArrow").style.display = "none";
+    document.getElementById("rightArrow").style.display = "none";
+    if (e.key == "leftArrow" || e.key == "a") {
         direction = -1;
-    } else if (e.key == "ArrowRight" || e.key == "d") {
+        leftDown = true;
+    } else if (e.key == "rightArrow" || e.key == "d") {
         direction = 1;
+        rightDown = true;
     }
 });
 
 document.addEventListener("keyup", (e) => {
-    if (((e.key == "ArrowLeft" || e.key == "a") && direction == -1) || ((e.key == "ArrowRight" || e.key == "d") && direction == 1)) {
+    if (e.key == "leftArrow" || e.key == "a") {
+        leftDown = false;
+        if (rightDown) {
+            direction = 1;
+        } else {
+            direction = 0;
+        }
+    } else if (e.key == "rightArrow" || e.key == "d") {
+        rightDown = false;
+        if (leftDown) {
+            direction = -1;
+        } else {
+            direction = 0;
+        }
+    }
+});
+
+document.addEventListener("touchstart", () => {
+    touchscreen = true;
+    if (gameStarted) {
+        document.getElementById("leftArrow").style.display = "";
+        document.getElementById("rightArrow").style.display = "";
+    }
+});
+
+document.getElementById("leftArrow").addEventListener("touchstart", () => {
+    leftDown = true;
+    direction = -1;
+});
+
+document.getElementById("rightArrow").addEventListener("touchstart", () => {
+    rightDown = true;
+    direction = 1;
+});
+
+document.getElementById("leftArrow").addEventListener("touchend", () => {
+    leftDown = false;
+    if (rightDown) {
+        direction = 1;
+    } else {
+        direction = 0;
+    }
+});
+
+document.getElementById("rightArrow").addEventListener("touchend", () => {
+    rightDown = false;
+    if (leftDown) {
+        direction = -1;
+    } else {
         direction = 0;
     }
 });
@@ -109,6 +169,13 @@ function startGame() {
     document.getElementById("score").style.display = "";
     document.getElementById("mainMenu").style.display = "none";
     document.getElementById("gameOver").style.display = "none";
+    if (touchscreen) {
+        document.getElementById("leftArrow").style.display = "";
+        document.getElementById("rightArrow").style.display = "";
+    } else {
+        document.getElementById("leftArrow").style.display = "none";
+        document.getElementById("rightArrow").style.display = "none";
+    }
     clearTimeout(timer);
     score = 0;
     switch (String(highscore).length) {
@@ -136,6 +203,7 @@ function startGame() {
     direction = false;
     apple.x = Math.random() * 95;
     apple.y = Math.random() * 95;
+    gameStarted = true;
     gameLoop();
 }
 
@@ -208,8 +276,10 @@ function gameLoop() {
             scoreUpdated++;
         }
         if (endX[endX.length - 1] > 99 || endX[endX.length - 1] < 1 || endY[endY.length - 1] < 1 || endY[endY.length - 1] > 99) {
-            gameOver = true;  
+            gameOver = true;
             document.getElementById("gameOver").style.display = "";
+            document.getElementById("leftArrow").style.display = "none";
+            document.getElementById("rightArrow").style.display = "none";
         } else {
             for (let i = 0; i < endX.length - 10; i++) {
                 if (circleLineSegmentCollision(
@@ -218,6 +288,8 @@ function gameLoop() {
                 )) {
                     gameOver = true;
                     document.getElementById("gameOver").style.display = "";
+                    document.getElementById("leftArrow").style.display = "none";
+                    document.getElementById("rightArrow").style.display = "none";
                     break;
                 }
             }
@@ -298,6 +370,7 @@ function gameLoop() {
         timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime)));
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        gameStarted = false;
     }
 }
 

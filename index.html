@@ -11,6 +11,7 @@
             font-family: "Press Start 2P", system-ui;
             font-size: 1rem;
         }
+
         body {
             margin: 0;
             background-color: black;
@@ -22,14 +23,16 @@
         }
 
         #menu {
-            position: absolute;
+            position: fixed;
             text-align: center;
         }
 
         button {
-            border-radius: 0;
+            border-radius: 0px;
             width: 50%;
             padding: 2%;
+            cursor: pointer;
+            background-color: white;
         }
 
         .subMenu {
@@ -44,6 +47,24 @@
             max-width: 80%;
             position: relative;
             left: 10%
+        }
+
+        #leftArrow {
+            width: 10%;
+            left: 1%;
+            bottom: 1%;
+            position: fixed;
+        }
+
+        #rightArrow {
+            width: 10%;
+            right: 1%;
+            bottom: 1%;
+            position: fixed;
+        }
+
+        .arrows {
+            width: 100%;
         }
     </style>
 
@@ -79,12 +100,16 @@
         </div>
         <div id="helpScreen" class="subMenu" style="display: none;">
             <h1>How to Play</h1>
-            <p>Use the left and right arrow keys or W and D to turn your snake. Touch the apples with your head to eat them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose. Try to get a new highscore!</p>
+            <p>Use the left and right arrow keys or W and D to turn your snake (or the arrow buttons on touchscreens). Touch the apples with your head to eat
+                them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose.
+                Try to get a new highscore!</p>
             <br>
             <button id="closeHelp">Close</button>
         </div>
         <p id="score" style="display: none;"></p>
     </div>
+    <button id="leftArrow" style="display: none;"><img src="assets/leftArrow.webp" alt="&leftarrow;" class="arrows"></button>
+    <button id="rightArrow" style="display: none;"><img src="assets/rightArrow.webp" alt="&rightarrow;" class="arrows"></button>
     <script src="script.js"></script>
 </body>
 
