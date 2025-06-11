@@ -23,7 +23,7 @@ var scoreDisplay;
 var apple = { x: 0, y: 0, img: new Image() };
 var scoreUpdated;
 
-apple.img.src = "assets/apple.webp";
+apple.img.src = "./assets/apple.webp";
 
 
 resize();
@@ -141,14 +141,14 @@ function gameLoop() {
         // Turn snake
         if (direction == -1) {
             angles.push((angles[angles.length - 1] + (1.975 * Math.PI)) % (2 * Math.PI));
-            startX.push(startX[startX.length - 1]);
-            startY.push(startY[startY.length - 1]);
+            startX.push(endX[endX.length - 1]);
+            startY.push(endY[endY.length - 1]);
             endX.push(endX[endX.length - 1]);
             endY.push(endY[endY.length - 1]);
         } else if (direction == 1) {
             angles.push((angles[angles.length - 1] + (0.025 * Math.PI)) % (2 * Math.PI));
-            startX.push(startX[startX.length - 1]);
-            startY.push(startY[startY.length - 1]);
+            startX.push(endX[endX.length - 1]);
+            startY.push(endY[endY.length - 1]);
             endX.push(endX[endX.length - 1]);
             endY.push(endY[endY.length - 1]);
         }
@@ -165,8 +165,14 @@ function gameLoop() {
         if (endX[endX.length - 1] > 99 || endX[endX.length - 1] < 1 || endY[endY.length - 1] < 1 || endY[endY.length - 1] > 99) {
             gameOver = true
         } else {
-            for (let i = 0; i < endX.length - 2; i++) {
-                if (false) { gameOver = true }; // Check if snake collides with itself, but not implemented yet.
+            for (let i = 0; i < endX.length - 10; i++) {
+                if (circleLineSegmentCollision(
+                    endX[endX.length - 1], endY[endY.length - 1], 0.5,
+                    startX[i], startY[i], endX[i], endY[i]
+                )) {
+                    gameOver = true;
+                    break;
+                }
             }
         }
     } else {
@@ -211,7 +217,7 @@ function gameLoop() {
         startY[0] = endY.shift();
         angles.shift();
     }
-    //console.log(startX.length + " | " + startX[0] + " | " + endX[0] + " | " + startY[0] + " | " + endY[0] + " | " + angles[0])
+    //console.log(startX.length + " | " + startX[0] + " | " + endX[0] + " | " + endX[0] + " | " + endY[0] + " | " + angles[0])
 
     // Collision detection with apples
     if (
@@ -251,4 +257,23 @@ function gameLoop() {
 // Round to 12 decimal places to prevent issues with roundoff
 function round(num) {
     return Math.round(num * 10000000000) / 10000000000;
+}
+
+// The following code was written by AI (GPT-4.1 in GitHub Copilot)
+function circleLineSegmentCollision(cx, cy, r, x1, y1, x2, y2) {
+    // Vector from x1,y1 to x2,y2
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    if (dx === 0 && dy === 0) {
+        // The segment is a point
+        return Math.hypot(cx - x1, cy - y1) <= r;
+    }
+    // Project circle center onto the segment, computing parameterized position t
+    let t = ((cx - x1) * dx + (cy - y1) * dy) / (dx * dx + dy * dy);
+    t = Math.max(0, Math.min(1, t));
+    // Find the closest point on the segment
+    const closestX = x1 + t * dx;
+    const closestY = y1 + t * dy;
+    // Distance from circle center to segment
+    return Math.hypot(cx - closestX, cy - closestY) <= r;
 }
