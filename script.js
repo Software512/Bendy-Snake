@@ -34,6 +34,35 @@ if (document.cookie !== "") {
 
 document.getElementById("startGame").addEventListener("click", startGame);
 
+document.getElementById("playAgain").addEventListener("click", startGame);
+
+document.getElementById("leaveButton").addEventListener("click", () => {
+    document.getElementById("gameOver").style.display = "none";
+    document.getElementById("score").style.display = "none";
+    document.getElementById("mainMenu").style.display = "";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+document.getElementById("creditsButton").addEventListener("click", () => {
+    document.getElementById("creditScreen").style.display = "";
+    document.getElementById("mainMenu").style.display = "none";
+});
+
+document.getElementById("closeCredits").addEventListener("click", () => {
+    document.getElementById("creditScreen").style.display = "none";
+    document.getElementById("mainMenu").style.display = "";
+});
+
+document.getElementById("help").addEventListener("click", () => {
+    document.getElementById("helpScreen").style.display = "";
+    document.getElementById("mainMenu").style.display = "none";
+});
+
+document.getElementById("closeHelp").addEventListener("click", () => {
+    document.getElementById("helpScreen").style.display = "none";
+    document.getElementById("mainMenu").style.display = "";
+});
+
 document.addEventListener("keydown", (e) => {
     if (e.key == "ArrowLeft" || e.key == "a") {
         direction = -1;
@@ -55,17 +84,31 @@ function resize() {
         size = window.innerHeight;
         canvas.style.left = (window.innerWidth - size) / 2 + "px";
         canvas.style.top = 0;
+        menu.style.left = (window.innerWidth - size) / 2 + "px";
+        menu.style.top = 0;
     } else {
         size = window.innerWidth;
         canvas.style.top = (window.innerHeight - size) / 2 + "px";
         canvas.style.left = "0";
+        menu.style.top = (window.innerHeight - size) / 2 + "px";
+        menu.style.left = "0";
     }
     canvas.width = size;
     canvas.height = size;
+    menu.style.width = size + "px";
+    menu.style.height = size + "px";
     ctx.lineWidth = size * 0.02;
+    document.querySelector("html").style.fontSize = size / 50 + "px";
+    h1 = document.querySelectorAll("h1");
+    for (let i = 0; i < h1.length; i++) {
+        h1[i].style.fontSize = size / 25 + "px";
+    }
 }
 
 function startGame() {
+    document.getElementById("score").style.display = "";
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("gameOver").style.display = "none";
     clearTimeout(timer);
     score = 0;
     switch (String(highscore).length) {
@@ -81,6 +124,7 @@ function startGame() {
         default:
             scoreDisplay = "SCORE 0000| HI " + highscore;
     }
+    document.getElementById("score").innerHTML = scoreDisplay;
     startX = [35];
     startY = [50];
     endX = [65];
@@ -130,6 +174,7 @@ function updateScore() {
             scoreDisplay = scoreDisplay + "HI " + highscore;
             break;
     }
+    document.getElementById("score").innerHTML = scoreDisplay;
 }
 
 
@@ -163,7 +208,8 @@ function gameLoop() {
             scoreUpdated++;
         }
         if (endX[endX.length - 1] > 99 || endX[endX.length - 1] < 1 || endY[endY.length - 1] < 1 || endY[endY.length - 1] > 99) {
-            gameOver = true
+            gameOver = true;  
+            document.getElementById("gameOver").style.display = "";
         } else {
             for (let i = 0; i < endX.length - 10; i++) {
                 if (circleLineSegmentCollision(
@@ -171,6 +217,7 @@ function gameLoop() {
                     startX[i], startY[i], endX[i], endY[i]
                 )) {
                     gameOver = true;
+                    document.getElementById("gameOver").style.display = "";
                     break;
                 }
             }
@@ -247,10 +294,10 @@ function gameLoop() {
     ctx.arc(endX[endX.length - 1] * size / 100, endY[endY.length - 1] * size / 100, size / 100, 0, Math.PI * 2);
     ctx.stroke();
     ctx.closePath();
-    ctx.font = size / 25 + "px sans-serif";
-    ctx.fillText(scoreDisplay, size / 20, size / 15);
     if (endX.length) {
         timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime)));
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
 

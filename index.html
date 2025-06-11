@@ -7,27 +7,83 @@
     <!-- Why do I need these? -->
     <title>Snake</title>
     <style>
+        * {
+            font-family: "Press Start 2P", system-ui;
+            font-size: 1rem;
+        }
         body {
             margin: 0;
             background-color: black;
         }
 
         #canvas {
-            background-color: #EEE;
+            background-color: #AFA;
             position: fixed;
         }
 
         #menu {
             position: absolute;
-            text-align: fixed;
+            text-align: center;
+        }
+
+        button {
+            border-radius: 0;
+            width: 50%;
+            padding: 2%;
+        }
+
+        .subMenu {
+            margin-top: 10%;
+        }
+
+        #creditsButton {
+            margin-top: 50%;
+        }
+
+        #helpScreen {
+            max-width: 80%;
+            position: relative;
+            left: 10%
         }
     </style>
+
+    <!-- Used to get the font for the game -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <canvas id="canvas" width="100" height="100"></canvas>
     <div id="menu">
-        <button id="startGame">Start Game</button>
+        <div id="mainMenu" class="subMenu">
+            <h1>Bendy Snake</h1>
+            <button id="startGame">Play</button>
+            <br><br>
+            <button id="help">How to Play</button>
+            <button id="creditsButton">Credits</button>
+        </div>
+        <div id="gameOver" class="subMenu" style="display: none;">
+            <h1>Game Over!</h1>
+            <button id="playAgain">Play Again</button>
+            <br><br>
+            <button id="leaveButton">Main Menu</button>
+            <br>
+        </div>
+        <div id="creditScreen" style="display: none;" class="subMenu">
+            <h1>Credits</h1>
+            <p><a href="https://fonts.google.com/specimen/Press+Start+2P">Font</a> by CodeMan38</p>
+            <p>Code for detecting when the snake hits<br>itself made by Github Copilot &lpar;GPT-4.1&rpar;</p>
+            <p>Everything else made by me.</p>
+            <button id="closeCredits">Close</button>
+        </div>
+        <div id="helpScreen" class="subMenu" style="display: none;">
+            <h1>How to Play</h1>
+            <p>Use the left and right arrow keys or W and D to turn your snake. Touch the apples with your head to eat them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose. Try to get a new highscore!</p>
+            <br>
+            <button id="closeHelp">Close</button>
+        </div>
+        <p id="score" style="display: none;"></p>
     </div>
     <script src="script.js"></script>
 </body>
