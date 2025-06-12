@@ -1,0 +1,21 @@
+<svg version="1.1"
+    width="32" height="32"
+    xmlns="http://www.w3.org/2000/svg">
+
+    <path
+        fill="none"
+        stroke="green"
+        stroke-width = "4"
+        stroke-linecap = "round"
+        d="
+            M 4,28
+            V 10
+            A 6 6 0 0 1 16,10
+            V 20
+            A 6 6 0 0 0 22,26
+            H 26
+        "
+    />
+    
+    <circle cx="26" cy="26" r="4" fill="green" />
+</svg>
