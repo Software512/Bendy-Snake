@@ -116,7 +116,14 @@ document.addEventListener("keyup", (e) => {
     }
 });
 
-document.addEventListener("touchstart", () => {
+document.addEventListener("touchstart", (e) => {
+    if (e.target == document.getElementById("leftArrow")) {
+        leftDown = true;
+        direction = -1;
+    } else if (e.target == document.getElementById("rightArrow")) {
+        rightDown = true;
+        direction = 1;
+    }
     if (!touchscreen) {
         document.getElementById("keyboardHelp").style.display = "none";
         document.getElementById("mobileHelp").style.display = "";
@@ -127,34 +134,34 @@ document.addEventListener("touchstart", () => {
         }
     }
     touchscreen = true;
-});
-
-document.getElementById("leftArrow").addEventListener("touchstart", () => {
-    leftDown = true;
-    direction = -1;
 }, { passive: true });
 
-document.getElementById("rightArrow").addEventListener("touchstart", () => {
-    rightDown = true;
-    direction = 1;
-}, { passive: true });
-
-document.getElementById("leftArrow").addEventListener("touchend", () => {
-    leftDown = false;
-    if (rightDown) {
-        direction = 1;
-    } else {
-        direction = 0;
+document.addEventListener("touchend", (e) => {
+    if (e.target == document.getElementById("leftArrow")) {
+        leftDown = false;
+        if (rightDown) {
+            direction = 1;
+        } else {
+            direction = 0;
+        }
+    } else if (e.target == document.getElementById("rightArrow")) {
+        rightDown = false;
+        if (leftDown) {
+            direction = -1;
+        } else {
+            direction = 0;
+        }
     }
-});
+    if (!touchscreen) {
+        document.getElementById("keyboardHelp").style.display = "none";
+        document.getElementById("mobileHelp").style.display = "";
 
-document.getElementById("rightArrow").addEventListener("touchend", () => {
-    rightDown = false;
-    if (leftDown) {
-        direction = -1;
-    } else {
-        direction = 0;
+        if (gameStarted) {
+            document.getElementById("leftArrow").style.display = "";
+            document.getElementById("rightArrow").style.display = "";
+        }
     }
+    touchscreen = true;
 });
 
 addEventListener("resize", resize);
