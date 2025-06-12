@@ -3,10 +3,13 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width" charset="utf-8" content-type="utf-8"> <!-- Why do I need these? -->
+    <meta name="viewport" content="width=device-width" charset="utf-8" content-type="utf-8">
+    <!-- Why do I need these? -->
     <link rel="icon" href="assets/favicon.svg">
     <link rel="apple-touch-icon" href="assets/apple-icon.png">
-    <noscript><meta http-equiv="refresh" content="0;url=noscript.html"></noscript>
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=noscript.html">
+    </noscript>
     <title>Bendy Snake</title>
     <style>
         * {
@@ -17,6 +20,7 @@
         body {
             margin: 0;
             background-color: black;
+            touch-action: none;
         }
 
         #canvas {
@@ -78,7 +82,8 @@
             margin-left: 10%;
         }
 
-        #startGame, #playAgain {
+        #startGame,
+        #playAgain {
             margin-bottom: 2.5%;
         }
     </style>
@@ -113,7 +118,9 @@
         </div>
         <div id="helpScreen" class="subMenu" style="display: none;">
             <h1>How to Play</h1>
-            <p class="longText">Use the <span id="keyboardHelp">left and right arrow keys or W and D</span><span id="mobileHelp" style="display: none;">arrow buttons</span> to turn your snake. Touch the apples with your head to eat
+            <p class="longText">Use the <span id="keyboardHelp">left and right arrow keys or W and D</span><span
+                    id="mobileHelp" style="display: none;">arrow buttons</span> to turn your snake. Touch the apples
+                with your head to eat
                 them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose.
                 Try to get a new highscore!</p>
             <button id="closeHelp">Close</button>

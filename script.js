@@ -132,12 +132,12 @@ document.addEventListener("touchstart", () => {
 document.getElementById("leftArrow").addEventListener("touchstart", () => {
     leftDown = true;
     direction = -1;
-}, {passive: true});
+}, { passive: true });
 
 document.getElementById("rightArrow").addEventListener("touchstart", () => {
     rightDown = true;
     direction = 1;
-}, {passive: true});
+}, { passive: true });
 
 document.getElementById("leftArrow").addEventListener("touchend", () => {
     leftDown = false;
