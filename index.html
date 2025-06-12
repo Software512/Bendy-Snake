@@ -35,6 +35,7 @@
             padding: 2%;
             cursor: pointer;
             background-color: white;
+            border: 2px solid black;
         }
 
         .subMenu {
@@ -43,12 +44,6 @@
 
         #creditsButton {
             margin-top: 50%;
-        }
-
-        #helpScreen {
-            max-width: 80%;
-            position: relative;
-            left: 10%
         }
 
         #leftArrow {
@@ -65,12 +60,24 @@
             position: fixed;
         }
 
-        .arrows {
-            width: 100%;
+        #leftArrow {
+            background-image: url(assets/leftArrow.webp);
+            background-size: contain;
         }
 
-        #helpText {
+        #rightArrow {
+            background-image: url(assets/rightArrow.webp);
+            background-size: contain;
+        }
+
+        .longText {
             line-height: 1.25;
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        #startGame, #playAgain {
+            margin-bottom: 2.5%;
         }
     </style>
 
@@ -86,36 +93,33 @@
         <div id="mainMenu" class="subMenu">
             <h1>Bendy Snake</h1>
             <button id="startGame">Play</button>
-            <br><br>
             <button id="help">How to Play</button>
             <button id="creditsButton">Credits</button>
         </div>
         <div id="gameOver" class="subMenu" style="display: none;">
             <h1>Game Over!</h1>
             <button id="playAgain">Play Again</button>
-            <br><br>
             <button id="leaveButton">Main Menu</button>
             <br>
         </div>
-        <div id="creditScreen" style="display: none;" class="subMenu">
+        <div id="creditScreen" class="subMenu" style="display: none;">
             <h1>Credits</h1>
             <p><a href="https://fonts.google.com/specimen/Press+Start+2P">Font</a> by CodeMan38</p>
-            <p>Code for detecting when the snake hits<br>itself made by GitHub Copilot &lpar;GPT-4.1&rpar;</p>
+            <p class="longText">Code for detecting when the snake hits itself made by GitHub Copilot &lpar;GPT-4.1&rpar;
             <p>Everything else made by me.</p>
             <button id="closeCredits">Close</button>
         </div>
         <div id="helpScreen" class="subMenu" style="display: none;">
             <h1>How to Play</h1>
-            <p id="helpText">Use the <span id="keyboardHelp">left and right arrow keys or W and D</span><span id="mobileHelp" style="display: none;">arrow buttons</span> to turn your snake. Touch the apples with your head to eat
+            <p class="longText">Use the <span id="keyboardHelp">left and right arrow keys or W and D</span><span id="mobileHelp" style="display: none;">arrow buttons</span> to turn your snake. Touch the apples with your head to eat
                 them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose.
                 Try to get a new highscore!</p>
-            <br>
             <button id="closeHelp">Close</button>
         </div>
         <p id="score" style="display: none;"></p>
     </div>
-    <button id="leftArrow" style="display: none;"><img src="assets/leftArrow.webp" alt="&leftarrow;" class="arrows"></button>
-    <button id="rightArrow" style="display: none;"><img src="assets/rightArrow.webp" alt="&rightarrow;" class="arrows"></button>
+    <div id="leftArrow" style="display: none;"></div>
+    <div id="rightArrow" style="display: none;"></div>
     <script src="script.js"></script>
 </body>
 

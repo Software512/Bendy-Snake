@@ -37,8 +37,8 @@ if (document.cookie !== "") {
     highscore = document.cookie.split("=")[1];
 }
 
-document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
-document.addEventListener("selectionstart", () => { document.getSelection().removeAllRanges(); });
+document.addEventListener("contextmenu", (e) => { e.preventDefault(); });
+document.addEventListener("selectionchange", (e) => { document.getSelection().removeAllRanges(); });
 
 document.getElementById("startGame").addEventListener("click", startGame);
 
