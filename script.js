@@ -38,7 +38,6 @@ if (document.cookie !== "") {
 }
 
 document.addEventListener("contextmenu", (e) => { e.preventDefault(); });
-document.addEventListener("selectionchange", (e) => { document.getSelection().removeAllRanges(); });
 
 document.getElementById("startGame").addEventListener("click", startGame);
 
@@ -173,14 +172,14 @@ function resize() {
         canvas.style.top = 0;
         menu.style.left = (window.innerWidth - size) / 2 + "px";
         menu.style.top = 0;
-        buttonSize = Math.max((innerWidth * 0.96 - size) / 2, size / 12.5) + "px";
+        buttonSize = Math.min(Math.max((innerWidth * 0.96 - size) / 2, size / 12.5), size / 4) + "px";
     } else {
         size = window.innerWidth;
         canvas.style.top = (window.innerHeight - size) / 2 + "px";
         canvas.style.left = "0";
         menu.style.top = (window.innerHeight - size) / 2 + "px";
         menu.style.left = "0";
-        buttonSize = Math.max((innerHeight * 0.96 - size) / 2, size / 12.5) + "px";
+        buttonSize = Math.min(Math.max((innerHeight * 0.96 - size) / 2, size / 12.5), size / 4) + "px";
     }
     canvas.width = size;
     canvas.height = size;
