@@ -67,6 +67,10 @@
         .arrows {
             width: 100%;
         }
+
+        #helpText {
+            line-height: 1.25;
+        }
     </style>
 
     <!-- Used to get the font for the game -->
@@ -101,7 +105,7 @@
         </div>
         <div id="helpScreen" class="subMenu" style="display: none;">
             <h1>How to Play</h1>
-            <p>Use the left and right arrow keys or W and D to turn your snake (or the arrow buttons on touchscreens). Touch the apples with your head to eat
+            <p id="helpText">Use the <span id="keyboardHelp">left and right arrow keys or W and D</span><span id="mobileHelp" style="display: none;">arrow buttons</span> to turn your snake. Touch the apples with your head to eat
                 them, increasing your score and the snake's length. If your head runs into a wall or yourself, you lose.
                 Try to get a new highscore!</p>
             <br>

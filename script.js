@@ -75,9 +75,20 @@ document.getElementById("closeHelp").addEventListener("click", () => {
 });
 
 document.addEventListener("keydown", (e) => {
-    touchscreen = false;
-    document.getElementById("leftArrow").style.display = "none";
-    document.getElementById("rightArrow").style.display = "none";
+    if (touchscreen) {
+        document.getElementById("keyboardHelp").style.display = "";
+        document.getElementById("mobileHelp").style.display = "none";
+
+        if (gameStarted) {
+            document.getElementById("leftArrow").style.display = "";
+            document.getElementById("rightArrow").style.display = "";
+        }
+        touchscreen = false;
+        document.getElementById("leftArrow").style.display = "none";
+        document.getElementById("rightArrow").style.display = "none";
+    }
+
+
     if (e.key == "ArrowLeft" || e.key == "a") {
         direction = -1;
         leftDown = true;
@@ -106,11 +117,16 @@ document.addEventListener("keyup", (e) => {
 });
 
 document.addEventListener("touchstart", () => {
-    touchscreen = true;
-    if (gameStarted) {
-        document.getElementById("leftArrow").style.display = "";
-        document.getElementById("rightArrow").style.display = "";
+    if (!touchscreen) {
+        document.getElementById("keyboardHelp").style.display = "none";
+        document.getElementById("mobileHelp").style.display = "";
+
+        if (gameStarted) {
+            document.getElementById("leftArrow").style.display = "";
+            document.getElementById("rightArrow").style.display = "";
+        }
     }
+    touchscreen = true;
 });
 
 document.getElementById("leftArrow").addEventListener("touchstart", () => {
@@ -164,7 +180,7 @@ function resize() {
     menu.style.width = size + "px";
     menu.style.height = size + "px";
     ctx.lineWidth = size * 0.02;
-    document.querySelector("html").style.fontSize = size / 50 + "px";
+    document.querySelector("html").style.fontSize = size / 40 + "px";
     h1 = document.querySelectorAll("h1");
     for (let i = 0; i < h1.length; i++) {
         h1[i].style.fontSize = size / 25 + "px";
