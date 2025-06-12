@@ -26,6 +26,7 @@ var touchscreen = false;
 var gameStarted = false;
 var leftDown;
 var rightDown;
+var buttonSize;
 
 apple.img.src = "./assets/apple.webp";
 
@@ -149,22 +150,14 @@ function resize() {
         canvas.style.top = 0;
         menu.style.left = (window.innerWidth - size) / 2 + "px";
         menu.style.top = 0;
-
-        document.getElementById("leftArrow").style.width = (innerWidth * 0.96 - size) / 2 + "px";
-        document.getElementById("leftArrow").style.height = (innerWidth * 0.96 - size) / 2 + "px";
-        document.getElementById("rightArrow").style.width = (innerWidth * 0.96 - size) / 2 + "px";
-        document.getElementById("rightArrow").style.height = (innerWidth * 0.96 - size) / 2 + "px";
+        buttonSize = Math.max((innerWidth * 0.96 - size) / 2, size / 12.5) + "px";
     } else {
         size = window.innerWidth;
         canvas.style.top = (window.innerHeight - size) / 2 + "px";
         canvas.style.left = "0";
         menu.style.top = (window.innerHeight - size) / 2 + "px";
         menu.style.left = "0";
-
-        document.getElementById("leftArrow").style.width = (innerHeight * 0.96 - size) / 2 + "px";
-        document.getElementById("leftArrow").style.height = (innerHeight * 0.96 - size) / 2 + "px";
-        document.getElementById("rightArrow").style.width = (innerHeight * 0.96 - size) / 2 + "px";
-        document.getElementById("rightArrow").style.height = (innerHeight * 0.96 - size) / 2 + "px";
+        buttonSize = Math.max((innerHeight * 0.96 - size) / 2, size / 12.5) + "px";
     }
     canvas.width = size;
     canvas.height = size;
@@ -176,7 +169,10 @@ function resize() {
     for (let i = 0; i < h1.length; i++) {
         h1[i].style.fontSize = size / 25 + "px";
     }
-
+    document.getElementById("leftArrow").style.width = buttonSize;
+    document.getElementById("leftArrow").style.height = buttonSize;
+    document.getElementById("rightArrow").style.width = buttonSize;
+    document.getElementById("rightArrow").style.height = buttonSize;
 }
 
 function startGame() {
