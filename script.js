@@ -77,24 +77,24 @@ document.addEventListener("keydown", (e) => {
     touchscreen = false;
     document.getElementById("leftArrow").style.display = "none";
     document.getElementById("rightArrow").style.display = "none";
-    if (e.key == "leftArrow" || e.key == "a") {
+    if (e.key == "ArrowLeft" || e.key == "a") {
         direction = -1;
         leftDown = true;
-    } else if (e.key == "rightArrow" || e.key == "d") {
+    } else if (e.key == "ArrowRight" || e.key == "d") {
         direction = 1;
         rightDown = true;
     }
 });
 
 document.addEventListener("keyup", (e) => {
-    if (e.key == "leftArrow" || e.key == "a") {
+    if (e.key == "ArrowLeft" || e.key == "a") {
         leftDown = false;
         if (rightDown) {
             direction = 1;
         } else {
             direction = 0;
         }
-    } else if (e.key == "rightArrow" || e.key == "d") {
+    } else if (e.key == "ArrowRight" || e.key == "d") {
         rightDown = false;
         if (leftDown) {
             direction = -1;
