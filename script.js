@@ -49,7 +49,6 @@ document.getElementById("leaveButton").addEventListener("click", () => {
     document.getElementById("mainMenu").style.display = "";
     document.getElementById("leftArrow").style.display = "none";
     document.getElementById("rightArrow").style.display = "none";
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     gameStarted = false;
 });
 
@@ -398,7 +397,7 @@ function gameLoop() {
     ctx.arc(endX[endX.length - 1] * size / 100, endY[endY.length - 1] * size / 100, size / 100, 0, Math.PI * 2);
     ctx.stroke();
     ctx.closePath();
-    if (endX.length) {
+    if (endX.length && gameStarted) {
         timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime)));
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
