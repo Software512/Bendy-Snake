@@ -26,7 +26,7 @@
         }
 
         #canvas {
-            background-color: #AFA;
+            background-color: #aaffaa;
             position: fixed;
         }
 
@@ -36,12 +36,20 @@
         }
 
         button {
-            border-radius: 0px;
             width: 50%;
             padding: 2%;
             cursor: pointer;
             background-color: white;
-            border: 2px solid black;
+            color: black;
+            outline: 0.15rem solid grey;
+            border: none;
+        }
+
+        .themeButton {
+            width: 20%;
+            font-size: 75%;
+            padding: 1.5%;
+            margin-bottom: 10%;
         }
 
         .subMenu {
@@ -49,7 +57,9 @@
         }
 
         #creditsButton {
-            margin-top: 50%;
+            position: absolute;
+            left: 25%;
+            top: 85%;
         }
 
         #leftArrow {
@@ -69,13 +79,13 @@
         #leftArrow {
             background-image: url(assets/leftArrow.webp);
             background-size: contain;
-            border: 2px solid black;
+            outline: 0.15rem solid grey;
         }
 
         #rightArrow {
             background-image: url(assets/rightArrow.webp);
             background-size: contain;
-            border: 2px solid black;
+            outline: 0.15rem solid grey;
         }
 
         .longText {
@@ -85,8 +95,32 @@
         }
 
         #startGame,
-        #playAgain {
+        #playAgain,
+        #help {
             margin-bottom: 2.5%;
+        }
+
+        h2 {
+            margin-top: 1%;
+        }
+
+        input[type="color"] {
+            outline: 0.15rem solid grey;
+            border: none;
+            vertical-align: text-top;
+            margin-bottom: 2%;
+            padding: 0;
+            width: 1em;
+            height: 1em;
+        }
+
+        #colorPickers {
+            background-color: white;
+            padding-top: 2%;
+            padding-bottom: 1%;
+            outline: 0.15rem solid grey;
+            width: 50%;
+            margin: auto;
         }
     </style>
 
@@ -103,6 +137,16 @@
             <h1>Bendy Snake</h1>
             <button id="startGame">Play</button>
             <button id="help">How to Play</button>
+            <h2>Color Theme</h2>
+            <button id="defaultColor" class="themeButton" style="background-color: #e2e2e2;">Default</button>
+            <button id="classicColor" class="themeButton">Classic</button>
+            <button id="customColor" class="themeButton">Custom</button>
+            <div id="colorPickers" style="display: none;">
+                <label for="snakeColor">Snake: </label><input id="snakeColor" type="color"><br>
+                <label for="backgroundColor">Background: </label><input id="backgroundColor" type="color"><br>
+                <label for="textColor">Text: </label><input id="textColor" type="color"><br>
+                <label for="barColor">Bars: </label><input id="barColor" type="color"><br>
+            </div>
             <button id="creditsButton">Credits</button>
         </div>
         <div id="gameOver" class="subMenu" style="display: none;">

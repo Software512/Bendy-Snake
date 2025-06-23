@@ -27,6 +27,8 @@ var gameStarted = false;
 var leftDown;
 var rightDown;
 var buttonSize;
+var onMainMenu = true;
+var theme = { theme: 1, snake: "#008000", background: "#aaffaa", text: "#000000", bars: "#000000" };
 
 apple.img.src = "./assets/apple.webp";
 
@@ -34,8 +36,16 @@ apple.img.src = "./assets/apple.webp";
 resize();
 
 if (document.cookie !== "") {
-    highscore = document.cookie.split("=")[1];
+    if (document.cookie.includes("theme")) {
+        theme = JSON.parse(document.cookie.match(/theme={.+}/)[0].split("=")[1]);
+        updateTheme();
+    }
+    if (document.cookie.includes("highscore")) {
+        highscore = document.cookie.match(/highscore=[0-9]+/)[0].split("=")[1];
+    }
 }
+snakePreview();
+
 
 document.addEventListener("contextmenu", (e) => { e.preventDefault(); });
 
@@ -49,27 +59,78 @@ document.getElementById("leaveButton").addEventListener("click", () => {
     document.getElementById("mainMenu").style.display = "";
     document.getElementById("leftArrow").style.display = "none";
     document.getElementById("rightArrow").style.display = "none";
-    gameStarted = false;
+    onMainMenu = true;
+    snakePreview();
 });
 
 document.getElementById("creditsButton").addEventListener("click", () => {
     document.getElementById("creditScreen").style.display = "";
     document.getElementById("mainMenu").style.display = "none";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    onMainMenu = false;
 });
 
 document.getElementById("closeCredits").addEventListener("click", () => {
     document.getElementById("creditScreen").style.display = "none";
     document.getElementById("mainMenu").style.display = "";
+    onMainMenu = true;
+    snakePreview();
 });
 
 document.getElementById("help").addEventListener("click", () => {
     document.getElementById("helpScreen").style.display = "";
     document.getElementById("mainMenu").style.display = "none";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    onMainMenu = false;
 });
 
 document.getElementById("closeHelp").addEventListener("click", () => {
     document.getElementById("helpScreen").style.display = "none";
     document.getElementById("mainMenu").style.display = "";
+    onMainMenu = true;
+    snakePreview();
+});
+
+document.getElementById("defaultColor").addEventListener("click", () => {
+    theme.theme = 1;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("classicColor").addEventListener("click", () => {
+    theme.theme = 2;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("customColor").addEventListener("click", () => {
+    theme.theme = 3;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("snakeColor").addEventListener("input", (e) => {
+    theme.snake = e.target.value;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("backgroundColor").addEventListener("input", (e) => {
+    theme.background = e.target.value;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("textColor").addEventListener("input", (e) => {
+    theme.text = e.target.value;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
+});
+
+document.getElementById("barColor").addEventListener("input", (e) => {
+    theme.bars = e.target.value;
+    document.cookie = "theme=" + JSON.stringify(theme);
+    updateTheme();
 });
 
 document.addEventListener("keydown", (e) => {
@@ -194,6 +255,9 @@ function resize() {
     document.getElementById("leftArrow").style.height = buttonSize;
     document.getElementById("rightArrow").style.width = buttonSize;
     document.getElementById("rightArrow").style.height = buttonSize;
+    if (onMainMenu) {
+        snakePreview();
+    }
 }
 
 function startGame() {
@@ -235,6 +299,7 @@ function startGame() {
     apple.x = Math.random() * 95;
     apple.y = Math.random() * 95;
     gameStarted = true;
+    onMainMenu = false;
     gameLoop();
 }
 
@@ -386,7 +451,13 @@ function gameLoop() {
     ctx.drawImage(apple.img, apple.x * size / 100, apple.y * size / 100, size / 20, size / 20);
     ctx.beginPath();
     ctx.lineCap = "round";
-    ctx.strokeStyle = "green";
+    if (theme.theme == 1) {
+        ctx.strokeStyle = "green";
+    } else if (theme.theme == 2) {
+        ctx.strokeStyle = "lime";
+    } else {
+        ctx.strokeStyle = theme.snake;
+    }
     ctx.moveTo(startX[0] * size / 100, startY[0] * size / 100);
     for (let i = 0; i < startX.length; i++) {
         ctx.lineTo(endX[i] * size / 100, endY[i] * size / 100);
@@ -398,7 +469,8 @@ function gameLoop() {
     ctx.stroke();
     ctx.closePath();
     if (endX.length && gameStarted) {
-        timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime)));
+        console.log(performance.now() - startTime)
+        timer = setTimeout(gameLoop, Math.max(100 / 6 - (performance.now() - startTime), 0));
     } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         gameStarted = false;
@@ -408,6 +480,62 @@ function gameLoop() {
 // Round to 12 decimal places to prevent issues with roundoff
 function round(num) {
     return Math.round(num * 10000000000) / 10000000000;
+}
+
+function snakePreview() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.lineCap = "round";
+    if (theme.theme == 1) {
+        ctx.strokeStyle = "green";
+    } else if (theme.theme == 2) {
+        ctx.strokeStyle = "lime";
+    } else {
+        ctx.strokeStyle = theme.snake;
+    }
+    ctx.moveTo(0.35 * size, 0.5 * size);
+    ctx.lineTo(0.65 * size, 0.5 * size);
+    ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.arc(0.65 * size, 0.5 * size, size / 100, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function updateTheme() {
+    if (theme.theme == 1) {
+        document.getElementById("defaultColor").style.backgroundColor = "#e2e2e2";
+        document.getElementById("classicColor").style.backgroundColor = "";
+        document.getElementById("customColor").style.backgroundColor = "";
+        document.body.style.backgroundColor = "black";
+        document.body.style.color = "black";
+        document.getElementById("canvas").style.backgroundColor = "#aaffaa";
+        document.getElementById("colorPickers").style.display = "none";
+        snakePreview();
+    } else if (theme.theme == 2) {
+        document.getElementById("defaultColor").style.backgroundColor = "";
+        document.getElementById("classicColor").style.backgroundColor = "#e2e2e2";
+        document.getElementById("customColor").style.backgroundColor = "";
+        document.body.style.backgroundColor = "#202040";
+        document.body.style.color = "white";
+        document.getElementById("canvas").style.backgroundColor = "black";
+        document.getElementById("colorPickers").style.display = "none";
+        snakePreview();
+    } else {
+        document.getElementById("defaultColor").style.backgroundColor = "";
+        document.getElementById("classicColor").style.backgroundColor = "";
+        document.getElementById("customColor").style.backgroundColor = "#e2e2e2";
+        document.body.style.backgroundColor = theme.bars;
+        document.body.style.color = theme.text;
+        document.getElementById("canvas").style.backgroundColor = theme.background;
+        document.getElementById("colorPickers").style.display = "";
+        snakePreview();
+    }
+    document.getElementById("snakeColor").value = theme.snake;
+    document.getElementById("backgroundColor").value = theme.background;
+    document.getElementById("textColor").value = theme.text;
+    document.getElementById("barColor").value = theme.bars;
 }
 
 // The following code was written by AI (GPT-4.1 in GitHub Copilot)
