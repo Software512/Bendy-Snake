@@ -338,7 +338,7 @@ function updateScore() {
             scoreDisplay = scoreDisplay + "HI " + highscore;
             break;
     }
-    document.getElementById("score").innerHTML = scoreDisplay;
+    document.getElementById("score").textContent = scoreDisplay;
 }
 
 
