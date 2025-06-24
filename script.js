@@ -286,7 +286,7 @@ function startGame() {
         default:
             scoreDisplay = "SCORE 0000| HI " + highscore;
     }
-    document.getElementById("score").innerHTML = scoreDisplay;
+    document.getElementById("score").textContent = scoreDisplay;
     startX = [35];
     startY = [50];
     endX = [65];
